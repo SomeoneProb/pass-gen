@@ -1,10 +1,14 @@
+
+from flask import Flask, jsonify
 import random
 import string
 
+app = Flask(__name__)
+
 def generate_password(length=20):
     # Define character sets
-    letters = string.ascii_letters  # both uppercase and lowercase letters
-    digits = string.digits  # numbers
+    letters = string.ascii_letters
+    digits = string.digits
     special_chars = "@!#$%^&*()_+-=[]{}|;:,.<>?"
     
     # Combine all characters
@@ -27,6 +31,9 @@ def generate_password(length=20):
     # Join characters into string
     return ''.join(password)
 
-if __name__ == "__main__":
-    password = generate_password()
-    print("Generated Password:", password)
+@app.route('/generate-password')
+def get_password():
+    return jsonify({'password': generate_password()})
+
+if __name__ == '__main__':
+    app.run(host='0.0.0.0', port=5000)
